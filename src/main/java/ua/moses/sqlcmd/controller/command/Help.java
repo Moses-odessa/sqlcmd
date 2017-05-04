@@ -4,44 +4,41 @@ import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
 public class Help extends DefaultCommand {
-
+    private final Command[] commands;
 
     public Help(View view, DataBaseManager database) {
         super(view, database, "help", 0, 1);
+        this.commands = new Command[]{
+                new Connect(view, database),
+                new Tables(view, database),
+                new Create(view, database),
+                new Drop(view, database),
+                new Clear(view, database),
+                new Find(view, database),
+                this,                       //сам Help
+                new Unknow(view, database)};
     }
 
     public void run(String[] parameters) {
         if (checkParametersCount(parameters.length)) {
-            if (parameters.length==0){
-                view.write(Connect.help());
-                view.write(Tables.help());
-                view.write(Create.help());
-                view.write(Drop.help());
-                view.write(Clear.help());
-                view.write(Help.help());
+            if (parameters.length == 0) {
+                for (int i = 0; i < this.commands.length-1; i++) {//кроме последнего, который Unknow
+                    view.write(this.commands[i].help());
+                }
             } else {
                 String commandForHelp = parameters[0];
-                switch (commandForHelp){
-                    case "connect": view.write(Connect.help());
+                for (Command command : this.commands) {
+                    if (command.check(commandForHelp)){
+                        view.write(command.help());
                         break;
-                    case "tables": view.write(Tables.help());
-                        break;
-                    case "create": view.write(Create.help());
-                        break;
-                    case "drop": view.write(Drop.help());
-                        break;
-                    case "clear": view.write(Clear.help());
-                        break;
-                    case "help": view.write(Help.help());
-                        break;
-                    default: view.writeError(String.format("Команды %s не существует!", commandForHelp));
+                    }
                 }
             }
 
         }
     }
 
-    private static String help() {
+    public String help() {
         return "help - вызов справки. Формат комманды:\n" +
                 "\thelp - вывод справки по всем коммандам\n" +
                 "\thelp|command - вывод справки по комманде command\n";

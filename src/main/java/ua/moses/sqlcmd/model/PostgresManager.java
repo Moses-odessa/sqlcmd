@@ -24,7 +24,6 @@ public class PostgresManager implements DataBaseManager {
             this.SERVER_PORT = properties.getProperty("SERVER_PORT");
         } catch (IOException e) {
             //если нет файла конфигурации, то остаются значения по умолчанию
-            //System.out.println("Файл конфигурации не найден. Используются значения по умолчанию");
         }
     }
 
@@ -34,9 +33,9 @@ public class PostgresManager implements DataBaseManager {
         } catch (ClassNotFoundException e) {
             throw new Exception("Не подключен jdbc драйвер", e);
         }
-        try  {
+        try {
             this.connection = DriverManager.getConnection("jdbc:postgresql://" + SERVER_NAME + ":" + SERVER_PORT + "/"
-                + database, userName, password);
+                    + database, userName, password);
         } catch (SQLException e) {
             throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
         }
@@ -104,8 +103,36 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public String[] getTableData(String tableName) {
-        return new String[0];
+    public String[] getTableData(String tableName) throws Exception {
+        String sql = "SELECT * FROM public." + tableName;
+        String[] result = new String[1000];
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            ResultSetMetaData metaData = resultSet.getMetaData();
+
+            int columnsCount = metaData.getColumnCount();
+            String[] columns = new String[columnsCount];
+            for (int i = 0; i < columnsCount; i++) {
+                columns[i] = metaData.getColumnName(i + 1);
+            }
+
+            result[0] = String.join("|", columns);
+            int index = 1;
+            while (resultSet.next()) {
+                String[] currentRow = new String[columnsCount];
+                for (int i = 0; i < columnsCount; i++) {
+                    currentRow[i] = resultSet.getString(i + 1);
+                }
+                result[index] = String.join("|", currentRow);
+                index++;
+            }
+            return Arrays.copyOf(result, index);
+
+        } catch (SQLException e) {
+
+            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+        }
     }
 
     public void insertRecord(String tableName, String[] columns, String[] values) {

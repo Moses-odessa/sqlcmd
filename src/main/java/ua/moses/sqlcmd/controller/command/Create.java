@@ -27,7 +27,7 @@ public class Create extends DefaultCommand {
         }
     }
 
-    static String help() {
+    public String help() {
         return "create - создание новой таблицы с заданными полями. Формат комманды:\n" +
                 "\tcreate|tablename|column1|column2|column3|... - где tablename - имя таблицы,\n" +
                 "\tcolumn1, column2, column3 и т.д - названия ее полей (не больше ста)\n";

@@ -14,7 +14,13 @@ public class Unknow extends DefaultCommand {
     }
 
     @Override
+    public String help() {
+        return "Данной команды не существует!";
+    }
+
+    @Override
     public boolean check(String commandName) {
         return true;
     }
+
 }

@@ -24,7 +24,7 @@ public class Clear extends DefaultCommand {
         }
     }
 
-    static String help() {
+    public String help() {
         return "clear - очистка всех данных в таблице. Формат комманды:\n" +
                 "\tclear|tablename - где tablename - имя очищаемой таблицы\n";
     }

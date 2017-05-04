@@ -25,7 +25,7 @@ public class Connect extends DefaultCommand {
         }
     }
 
-    static String help() {
+    public String help() {
         return "connect - подключение к базе данных. Формат комманды:\n" +
                 "\tconnect|database|username|userpassword - где database - название базы данных,\n" +
                 "\tusername - имя пользователя, userpassword - пароль\n";

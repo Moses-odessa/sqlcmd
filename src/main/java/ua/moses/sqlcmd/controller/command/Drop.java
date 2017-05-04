@@ -24,7 +24,7 @@ public class Drop extends DefaultCommand {
         }
     }
 
-    static String help() {
+    public String help() {
         return "drop - удаление таблицы из базы данных. Формат комманды:\n" +
                 "\tdrop|tablename - где tablename - имя удаляемой таблицы\n";
     }

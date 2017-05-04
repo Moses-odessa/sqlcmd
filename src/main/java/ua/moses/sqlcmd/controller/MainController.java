@@ -17,11 +17,12 @@ public class MainController {
         this.view = view;
         this.commands = new Command[]{
                 new Connect(view, database),
-                new Help(view, database),
                 new Tables(view, database),
                 new Create(view, database),
                 new Drop(view, database),
                 new Clear(view, database),
+                new Find(view, database),
+                new Help(view, database),
                 new Unknow(view, database)};
     }
 
