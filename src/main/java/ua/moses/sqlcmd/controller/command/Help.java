@@ -1,12 +1,11 @@
 package ua.moses.sqlcmd.controller.command;
 
 import ua.moses.sqlcmd.model.DataBaseManager;
-import ua.moses.sqlcmd.view.View;
 
 public class Help extends DefaultCommand {
     private final Command[] commands;
 
-    public Help(View view, DataBaseManager database) {
+    public Help(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
         super(view, database, "help", 0, 1);
         this.commands = new Command[]{
                 new Connect(view, database),
@@ -14,7 +13,8 @@ public class Help extends DefaultCommand {
                 new Create(view, database),
                 new Drop(view, database),
                 new Clear(view, database),
-                new Find(view, database),
+                new Show(view, database),
+                new Insert(view, database),
                 this,                       //сам Help
                 new Unknow(view, database)};
     }

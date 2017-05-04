@@ -8,7 +8,7 @@ public interface DataBaseManager {
     void dropTable(String tableName) throws Exception;
     void clearTable(String tableName) throws Exception;
     String[] getTableData(String tableName) throws Exception;
-    void insertRecord (String tableName, String[] columns, String[] values);
+    void insertRecord (String tableName, String[] columns, String[] values) throws Exception;
     void updateRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
     void deleteRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
 

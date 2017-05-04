@@ -135,8 +135,30 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public void insertRecord(String tableName, String[] columns, String[] values) {
+    public void insertRecord(String tableName, String[] columns, String[] values) throws Exception {
+        String columnsQuerry = "";
+        String valuesQuerry = "";
+        for (int i = 0; i < columns.length; i++) {
+            columnsQuerry += columns[i];
+            if (i < columns.length - 1) {
+                columnsQuerry += ", ";
+            }
+        }
+        for (int i = 0; i < values.length; i++) {
+            valuesQuerry += "'" + values[i] + "'";
+            if (i < values.length - 1) {
+                valuesQuerry += ", ";
+            }
+        }
+        String sql = "INSERT INTO public." + tableName + "\n" +
+                "(" + columnsQuerry + ")\n" +
+                "VALUES (" + valuesQuerry + ")\n";
 
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+        }
     }
 
     public void updateRecord(String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue) {

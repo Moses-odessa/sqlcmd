@@ -2,7 +2,6 @@ package ua.moses.sqlcmd.controller;
 
 import ua.moses.sqlcmd.controller.command.*;
 import ua.moses.sqlcmd.model.DataBaseManager;
-import ua.moses.sqlcmd.view.View;
 
 import java.util.Arrays;
 
@@ -10,10 +9,10 @@ import static java.lang.Thread.sleep;
 
 public class MainController {
     private static final String EXIT_COMMAND = "exit";
-    private View view;
+    private ua.moses.sqlcmd.view.View view;
     private Command[] commands;
 
-    MainController(View view, DataBaseManager database) {
+    MainController(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
         this.view = view;
         this.commands = new Command[]{
                 new Connect(view, database),
@@ -21,7 +20,8 @@ public class MainController {
                 new Create(view, database),
                 new Drop(view, database),
                 new Clear(view, database),
-                new Find(view, database),
+                new Show(view, database),
+                new Insert(view, database),
                 new Help(view, database),
                 new Unknow(view, database)};
     }
