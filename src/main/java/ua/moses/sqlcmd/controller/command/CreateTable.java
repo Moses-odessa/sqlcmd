@@ -5,10 +5,10 @@ import ua.moses.sqlcmd.view.View;
 
 import java.util.Arrays;
 
-public class Create extends DefaultCommand {
+public class CreateTable extends DefaultCommand {
 
 
-    public Create(View view, DataBaseManager database) {
+    public CreateTable(View view, DataBaseManager database) {
         super(view, database, "create", 1, 101);
     }
 
@@ -19,8 +19,8 @@ public class Create extends DefaultCommand {
             try {
                 database.createTable(tabledName, columns);
                 view.write(String.format("Таблица %s успешно создана", tabledName));
-            } catch (Exception e) {
-                view.writeError(e.getMessage());
+            } catch (RuntimeException e) {
+                view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
             view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");

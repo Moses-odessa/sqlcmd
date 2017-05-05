@@ -3,10 +3,10 @@ package ua.moses.sqlcmd.controller.command;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
-public class Drop extends DefaultCommand {
+public class DropTable extends DefaultCommand {
 
 
-    public Drop(View view, DataBaseManager database) {
+    public DropTable(View view, DataBaseManager database) {
         super(view, database, "drop", 1, 1);
     }
 
@@ -16,8 +16,8 @@ public class Drop extends DefaultCommand {
             try {
                 database.dropTable(tabledName);
                 view.write(String.format("Таблица %s успешно удалена", tabledName));
-            } catch (Exception e) {
-                view.writeError(e.getMessage());
+            } catch (RuntimeException e) {
+                view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
             view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");

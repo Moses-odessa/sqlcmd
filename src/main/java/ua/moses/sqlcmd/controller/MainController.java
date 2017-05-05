@@ -10,20 +10,20 @@ import static java.lang.Thread.sleep;
 public class MainController {
     private static final String EXIT_COMMAND = "exit";
     private ua.moses.sqlcmd.view.View view;
-    private Command[] commands;
+    private DefaultCommand[] commands;
 
     MainController(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
         this.view = view;
-        this.commands = new Command[]{
-                new Connect(view, database),
-                new Tables(view, database),
-                new Create(view, database),
-                new Drop(view, database),
-                new Clear(view, database),
-                new Show(view, database),
-                new Insert(view, database),
-                new Help(view, database),
-                new Unknow(view, database)};
+        this.commands = new DefaultCommand[]{
+                new ConnectToDatabase(view, database),
+                new ShowAllTables(view, database),
+                new CreateTable(view, database),
+                new DropTable(view, database),
+                new ClearTable(view, database),
+                new ShowTableData(view, database),
+                new InsertValues(view, database),
+                new HelpCommand(view, database),
+                new UnknowCommand(view, database)};
     }
 
     public void run() {
@@ -45,7 +45,7 @@ public class MainController {
                 break;
             }
 
-            for (Command command : commands) {
+            for (DefaultCommand command : commands) {
                 if (command.check(commandName)) {
                     command.run(commandParameters);
                     break;

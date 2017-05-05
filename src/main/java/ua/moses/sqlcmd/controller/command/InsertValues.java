@@ -5,10 +5,10 @@ import ua.moses.sqlcmd.view.View;
 
 import java.util.Arrays;
 
-public class Insert extends DefaultCommand {
+public class InsertValues extends DefaultCommand {
 
 
-    public Insert(View view, DataBaseManager database) {
+    public InsertValues(View view, DataBaseManager database) {
         super(view, database, "insert", 3, 201);
     }
 
@@ -25,8 +25,8 @@ public class Insert extends DefaultCommand {
             try {
                 database.insertRecord(tabledName, columns, values);
                 view.write(String.format("Запись в таблицу %s успешно добавлена", tabledName));
-            } catch (Exception e) {
-                view.writeError(e.getMessage());
+            } catch (RuntimeException e) {
+                view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
             view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");

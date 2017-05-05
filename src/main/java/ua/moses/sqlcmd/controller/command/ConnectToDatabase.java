@@ -4,10 +4,10 @@ import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
 
-public class Connect extends DefaultCommand {
+public class ConnectToDatabase extends DefaultCommand {
 
 
-    public Connect(View view, DataBaseManager database) {
+    public ConnectToDatabase(View view, DataBaseManager database) {
         super(view, database, "connect", 3, 3);
     }
 
@@ -19,8 +19,8 @@ public class Connect extends DefaultCommand {
             try {
                 database.connect(databaseName, userName, userPassword);
                 view.write(String.format("Подключение к базе данных %s с пользователем %s прошло успешно", databaseName, userName));
-            } catch (Exception e) {
-                view.writeError(e.getMessage());
+            } catch (RuntimeException e) {
+                view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         }
     }

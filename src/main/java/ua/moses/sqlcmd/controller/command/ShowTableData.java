@@ -3,21 +3,20 @@ package ua.moses.sqlcmd.controller.command;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
-public class Clear extends DefaultCommand {
+public class ShowTableData extends DefaultCommand {
 
 
-    public Clear(View view, DataBaseManager database) {
-        super(view, database, "clear", 1, 1);
+    public ShowTableData(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
+        super(view, database, "show", 1, 1);
     }
 
     public void run(String[] parameters) {
         if (checkParametersCount(parameters.length) && database.isConnected()) {
             String tabledName = parameters[0];
             try {
-                database.clearTable(tabledName);
-                view.write(String.format("Таблица %s успешно очищена", tabledName));
-            } catch (Exception e) {
-                view.writeError(e.getMessage());
+                view.writeTable(database.getTableData(tabledName));
+            } catch (RuntimeException e) {
+                view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
             view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
@@ -25,7 +24,7 @@ public class Clear extends DefaultCommand {
     }
 
     public String help() {
-        return "clear - очистка всех данных в таблице. Формат комманды:\n" +
-                "\tclear|tablename - где tablename - имя очищаемой таблицы\n";
+        return "show - вывод содержимого таблицы. Формат комманды:\n" +
+                "\tshow|tablename - где tablename - имя нужной таблицы\n";
     }
 }

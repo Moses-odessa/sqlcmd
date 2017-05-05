@@ -1,14 +1,14 @@
 package ua.moses.sqlcmd.model;
 
 public interface DataBaseManager {
-    void connect (String database, String userName, String password) throws Exception;
+    void connect (String database, String userName, String password) throws RuntimeException;
     boolean isConnected();
-    String[] getTables() throws Exception;
-    void createTable(String tableName, String[] columnsName) throws Exception;
-    void dropTable(String tableName) throws Exception;
-    void clearTable(String tableName) throws Exception;
-    String[] getTableData(String tableName) throws Exception;
-    void insertRecord (String tableName, String[] columns, String[] values) throws Exception;
+    String[] getTables() throws RuntimeException;
+    void createTable(String tableName, String[] columnsName) throws RuntimeException;
+    void dropTable(String tableName) throws RuntimeException;
+    void clearTable(String tableName) throws RuntimeException;
+    String[] getTableData(String tableName) throws RuntimeException;
+    void insertRecord (String tableName, String[] columns, String[] values) throws RuntimeException;
     void updateRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
     void deleteRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
 

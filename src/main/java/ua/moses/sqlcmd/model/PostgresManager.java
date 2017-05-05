@@ -1,7 +1,5 @@
 package ua.moses.sqlcmd.model;
 
-import ua.moses.sqlcmd.controller.command.Connect;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,7 +11,6 @@ public class PostgresManager implements DataBaseManager {
     private Connection connection;
     private String SERVER_NAME = "localhost";
     private String SERVER_PORT = "5432";
-    private final String DEFAULT_ERROR_MESSAGE = "Ошибка выполнения комманды. ";
 
     public PostgresManager() {
         this.connection = null;
@@ -27,17 +24,17 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public void connect(String database, String userName, String password) throws Exception {
+    public void connect(String database, String userName, String password) throws RuntimeException {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new Exception("Не подключен jdbc драйвер", e);
+            throw new RuntimeException("Не подключен jdbc драйвер");
         }
         try {
             this.connection = DriverManager.getConnection("jdbc:postgresql://" + SERVER_NAME + ":" + SERVER_PORT + "/"
                     + database, userName, password);
         } catch (SQLException e) {
-            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -45,7 +42,7 @@ public class PostgresManager implements DataBaseManager {
         return this.connection != null;
     }
 
-    public String[] getTables() throws Exception {
+    public String[] getTables() throws RuntimeException {
         String sql = "SELECT tablename FROM pg_catalog.pg_tables where schemaname = 'public'";
         String[] result = new String[1000];
         try (Statement statement = connection.createStatement();
@@ -59,12 +56,12 @@ public class PostgresManager implements DataBaseManager {
 
         } catch (SQLException e) {
 
-            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
 
     }
 
-    public void createTable(String tableName, String[] columnsName) throws Exception {
+    public void createTable(String tableName, String[] columnsName) throws RuntimeException {
         String columnsQuerry = "";
         for (int i = 0; i < columnsName.length; i++) {
             columnsQuerry += columnsName[i] + " text";
@@ -79,31 +76,31 @@ public class PostgresManager implements DataBaseManager {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
 
     }
 
-    public void dropTable(String tableName) throws Exception {
+    public void dropTable(String tableName) throws RuntimeException {
         String sql = "DROP TABLE public." + tableName;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
 
     }
 
-    public void clearTable(String tableName) throws Exception {
+    public void clearTable(String tableName) throws RuntimeException {
         String sql = "DELETE FROM public." + tableName;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    public String[] getTableData(String tableName) throws Exception {
+    public String[] getTableData(String tableName) throws RuntimeException {
         String sql = "SELECT * FROM public." + tableName;
         String[] result = new String[1000];
         try (Statement statement = connection.createStatement();
@@ -131,11 +128,11 @@ public class PostgresManager implements DataBaseManager {
 
         } catch (SQLException e) {
 
-            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void insertRecord(String tableName, String[] columns, String[] values) throws Exception {
+    public void insertRecord(String tableName, String[] columns, String[] values) throws RuntimeException {
         String columnsQuerry = "";
         String valuesQuerry = "";
         for (int i = 0; i < columns.length; i++) {
@@ -157,7 +154,7 @@ public class PostgresManager implements DataBaseManager {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new Exception(DEFAULT_ERROR_MESSAGE + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
