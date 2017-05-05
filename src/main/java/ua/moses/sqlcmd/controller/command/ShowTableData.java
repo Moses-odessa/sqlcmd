@@ -7,14 +7,18 @@ public class ShowTableData extends DefaultCommand {
 
 
     public ShowTableData(View view, DataBaseManager database) {
-        super(view, database, "show", 1, 1);
+        super(view, database, "show", 1, 2);
     }
 
     public void run(String[] parameters) {
         if (checkParametersCount(parameters.length) && database.isConnected()) {
             String tabledName = parameters[0];
+            String sortColumn = "";
+            if (parameters.length > 1){
+                sortColumn = parameters[1];
+            }
             try {
-                view.writeTable(database.getTableData(tabledName));
+                view.writeTable(database.getTableData(tabledName, sortColumn));
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
@@ -25,6 +29,8 @@ public class ShowTableData extends DefaultCommand {
 
     public String help() {
         return "show - вывод содержимого таблицы. Формат комманды:\n" +
-                "\tshow|tablename - где tablename - имя нужной таблицы\n";
+                "\tshow|tablename|sortcolumn - где tablename - имя нужной таблицы\n" +
+                "sortcolumn - имя колонки по которой будет отсортирована таблица\n" +
+                "(если опущено - без сортировки)";
     }
 }

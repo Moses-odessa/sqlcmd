@@ -100,8 +100,11 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public String[][] getTableData(String tableName) throws RuntimeException {
+    public String[][] getTableData(String tableName, String sortColumn) throws RuntimeException {
         String sql = "SELECT * FROM public." + tableName;
+        if (sortColumn.length() > 0){
+            sql+= " ORDER BY " + sortColumn;
+        }
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
 
