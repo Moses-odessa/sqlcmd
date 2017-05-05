@@ -18,13 +18,13 @@ public class HelpCommand extends DefaultCommand {
                 new UpdateRecords(view, database),
                 new DeleteRecords(view, database),
                 this,                       //сам HelpCommand
-                new UnknowCommand(view, database)};
+                new UnknownCommand(view, database)};
     }
 
     public void run(String[] parameters) {
         if (checkParametersCount(parameters.length)) {
             if (parameters.length == 0) {
-                for (int i = 0; i < this.commands.length-1; i++) {//кроме последнего, который UnknowCommand
+                for (int i = 0; i < this.commands.length-1; i++) {//кроме последнего, который UnknownCommand
                     view.write(this.commands[i].help());
                 }
             } else {

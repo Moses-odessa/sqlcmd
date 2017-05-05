@@ -3,9 +3,7 @@ package ua.moses.sqlcmd.controller.command;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
-
 public class ConnectToDatabase extends DefaultCommand {
-
 
     public ConnectToDatabase(View view, DataBaseManager database) {
         super(view, database, "connect", 3, 3);

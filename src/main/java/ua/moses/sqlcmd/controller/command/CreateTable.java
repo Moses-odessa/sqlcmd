@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 public class CreateTable extends DefaultCommand {
 
-
     public CreateTable(View view, DataBaseManager database) {
         super(view, database, "create", 1, 101);
     }

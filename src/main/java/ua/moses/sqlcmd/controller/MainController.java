@@ -25,7 +25,7 @@ public class MainController {
                 new UpdateRecords(view, database),
                 new DeleteRecords(view, database),
                 new HelpCommand(view, database),
-                new UnknowCommand(view, database)};
+                new UnknownCommand(view, database)};
     }
 
     public void run() {

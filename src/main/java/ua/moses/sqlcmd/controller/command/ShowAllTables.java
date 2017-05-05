@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 public class ShowAllTables extends DefaultCommand {
 
-
     public ShowAllTables(View view, DataBaseManager database) {
         super(view, database, "tables", 0, 1);
     }

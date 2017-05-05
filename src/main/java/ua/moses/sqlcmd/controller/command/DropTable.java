@@ -5,7 +5,6 @@ import ua.moses.sqlcmd.view.View;
 
 public class DropTable extends DefaultCommand {
 
-
     public DropTable(View view, DataBaseManager database) {
         super(view, database, "drop", 1, 1);
     }

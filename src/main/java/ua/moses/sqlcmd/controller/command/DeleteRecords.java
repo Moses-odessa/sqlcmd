@@ -3,10 +3,7 @@ package ua.moses.sqlcmd.controller.command;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
-import java.util.Arrays;
-
 public class DeleteRecords extends DefaultCommand {
-
 
     public DeleteRecords(View view, DataBaseManager database) {
         super(view, database, "delete", 3, 3);
@@ -31,7 +28,7 @@ public class DeleteRecords extends DefaultCommand {
     public String help() {
         return "delete - удаление записей в таблице. Формат комманды:\n" +
                 "\tdelete|tablename|criteriacolumn|criteriavalue - где tablename - имя таблицы,\n" +
-                "\tcriteriacolumn, criteriavalue - колонка и значение условия отбора\n" ;
+                "\tcriteriacolumn, criteriavalue - колонка и значение условия отбора\n";
     }
 
 }

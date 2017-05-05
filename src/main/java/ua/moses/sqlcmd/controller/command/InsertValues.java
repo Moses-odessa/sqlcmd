@@ -3,10 +3,7 @@ package ua.moses.sqlcmd.controller.command;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
-import java.util.Arrays;
-
 public class InsertValues extends DefaultCommand {
-
 
     public InsertValues(View view, DataBaseManager database) {
         super(view, database, "insert", 3, 201);

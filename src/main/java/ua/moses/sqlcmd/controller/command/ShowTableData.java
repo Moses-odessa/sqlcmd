@@ -6,7 +6,7 @@ import ua.moses.sqlcmd.view.View;
 public class ShowTableData extends DefaultCommand {
 
 
-    public ShowTableData(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
+    public ShowTableData(View view, DataBaseManager database) {
         super(view, database, "show", 1, 1);
     }
 

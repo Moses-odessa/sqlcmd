@@ -3,9 +3,9 @@ package ua.moses.sqlcmd.controller.command;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
-public class UnknowCommand extends DefaultCommand {
+public class UnknownCommand extends DefaultCommand {
 
-    public UnknowCommand(View view, DataBaseManager database) {
+    public UnknownCommand(View view, DataBaseManager database) {
         super(view, database, "", 0, 0);
     }
 

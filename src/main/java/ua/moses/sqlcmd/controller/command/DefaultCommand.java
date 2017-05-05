@@ -29,8 +29,14 @@ public abstract class DefaultCommand {
 
     boolean checkParametersCount(int count) {
         if (count < this.minParametersCount || count > this.maxParametersCount) {
-            view.writeError(String.format("Неверное количество параметров.\n" +
-                    "Ожидается от %s до %s, а получено %s.", this.minParametersCount, this.maxParametersCount, count));
+            String expectedParameters;
+            if (this.minParametersCount == this.maxParametersCount) {
+                expectedParameters = "" + this.minParametersCount;
+            } else {
+                expectedParameters = String.format("от %s до %s", this.minParametersCount, maxParametersCount);
+            }
+            view.writeError(String.format("Неверное количество параметров. " +
+                    "Ожидается %s, а получено %s.", expectedParameters, count));
             return false;
         } else {
             return true;
