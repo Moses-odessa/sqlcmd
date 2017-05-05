@@ -30,7 +30,7 @@ public class ShowTableData extends DefaultCommand {
     public String help() {
         return "show - вывод содержимого таблицы. Формат комманды:\n" +
                 "\tshow|tablename|sortcolumn - где tablename - имя нужной таблицы\n" +
-                "sortcolumn - имя колонки по которой будет отсортирована таблица\n" +
-                "(если опущено - без сортировки)";
+                "\tsortcolumn - имя колонки по которой будет отсортирована таблица\n" +
+                "\t(если опущено - без сортировки)\n";
     }
 }

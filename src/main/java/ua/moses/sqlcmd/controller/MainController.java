@@ -31,16 +31,16 @@ public class MainController {
     public void run() {
         view.write("Добро пожаловать!");
         while (true) {
-            view.write("---------------------------------------------\n" +
-                    "Введите нужную комманду или help для справки:");
-            String[] currentCommand = view.read().split("\\|");
+            view.write("------------------------------------------------------------------\n" +
+                    "Введите нужную комманду или help для справки (или exit для выхода):");
+            String[] commandString = view.read().split("\\|");
             String commandName = "";
             String[] commandParameters = new String[0];
-            if (currentCommand.length > 0) {
-                commandName = currentCommand[0];
+            if (commandString.length > 0) {
+                commandName = commandString[0];
             }
-            if (currentCommand.length > 1) {
-                commandParameters = Arrays.copyOfRange(currentCommand, 1, currentCommand.length);
+            if (commandString.length > 1) {
+                commandParameters = Arrays.copyOfRange(commandString, 1, commandString.length);
             }
             if (commandName.equalsIgnoreCase(EXIT_COMMAND)) {
                 view.write("До скорой встречи!");

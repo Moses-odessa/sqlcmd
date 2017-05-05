@@ -31,7 +31,7 @@ public class InsertValues extends DefaultCommand {
     }
 
     public String help() {
-        return "insert - создание новой таблицы с заданными полями. Формат комманды:\n" +
+        return "insert - добавление записи в таблицу. Формат комманды:\n" +
                 "\tinsert|tablename|column1|value1|column2|value2|... - где tablename - имя таблицы,\n" +
                 "\tcolumn1, column2, и т.д - названия записываемых полей (не больше ста)\n" +
                 "\tvalue1, value2, и т.д - соответственно записываемые значения\n";
