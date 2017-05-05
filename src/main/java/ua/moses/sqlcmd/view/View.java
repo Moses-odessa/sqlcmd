@@ -4,5 +4,5 @@ public interface View {
     String read ();
     void write(String s);
     void writeError(String s);
-    void writeTable(String[] s);
+    void writeTable(String[][] tableData);
 }

@@ -100,28 +100,30 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public String[] getTableData(String tableName) throws RuntimeException {
+    public String[][] getTableData(String tableName) throws RuntimeException {
         String sql = "SELECT * FROM public." + tableName;
-        String[] result = new String[1000];
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
 
             ResultSetMetaData metaData = resultSet.getMetaData();
-
             int columnsCount = metaData.getColumnCount();
+
+            String[][] result = new String[1000][columnsCount];
+
             String[] columns = new String[columnsCount];
             for (int i = 0; i < columnsCount; i++) {
                 columns[i] = metaData.getColumnName(i + 1);
             }
 
-            result[0] = String.join("|", columns);
+            result[0] = columns;
+
             int index = 1;
             while (resultSet.next()) {
                 String[] currentRow = new String[columnsCount];
                 for (int i = 0; i < columnsCount; i++) {
                     currentRow[i] = resultSet.getString(i + 1);
                 }
-                result[index] = String.join("|", currentRow);
+                result[index] = currentRow;
                 index++;
             }
             return Arrays.copyOf(result, index);
