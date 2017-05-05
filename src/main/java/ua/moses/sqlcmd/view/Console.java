@@ -19,14 +19,17 @@ public class Console implements View {
 
     public void writeTable(String[][] tableData) {
         int[] maxColumnsSize = getMaxColumsSize(tableData);
-
-        printHorisontalLine(maxColumnsSize, "┌", "─", "┐", "┬");
-        printRow(tableData[0], maxColumnsSize);
-        printHorisontalLine(maxColumnsSize, "├", "─", "┤", "┼");
-        for (int i = 1; i < tableData.length; i++) {
-            printRow(tableData[i], maxColumnsSize);
+        if (tableData[0].length == 0) {
+            System.err.println("Таблица не имеет колонок!");
+        } else {
+            printHorisontalLine(maxColumnsSize, "┌", "─", "┐", "┬");
+            printRow(tableData[0], maxColumnsSize);
+            printHorisontalLine(maxColumnsSize, "├", "─", "┤", "┼");
+            for (int i = 1; i < tableData.length; i++) {
+                printRow(tableData[i], maxColumnsSize);
+            }
+            printHorisontalLine(maxColumnsSize, "└", "─", "┘", "┴");
         }
-        printHorisontalLine(maxColumnsSize, "└", "─", "┘", "┴");
     }
 
     private int[] getMaxColumsSize(String[][] tableData) {
