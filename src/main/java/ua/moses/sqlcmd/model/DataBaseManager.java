@@ -9,7 +9,7 @@ public interface DataBaseManager {
     void clearTable(String tableName) throws RuntimeException;
     String[][] getTableData(String tableName) throws RuntimeException;
     void insertRecord (String tableName, String[] columns, String[] values) throws RuntimeException;
-    void updateRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
-    void deleteRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
+    int updateRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
+    int deleteRecord (String tableName, String criteriaColumn, String criteriaValue);
 
 }

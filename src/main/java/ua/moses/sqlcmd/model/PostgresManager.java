@@ -160,11 +160,26 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public void updateRecord(String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue) {
+    public int updateRecord(String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue) {
+        String sql = "UPDATE public." + tableName + " SET " +
+                setColumn + " = '" + setValue + "'  " +
+                "WHERE " + criteriaColumn + " = '" + criteriaValue + "'";
 
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
-    public void deleteRecord(String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue) {
+    public int deleteRecord(String tableName, String criteriaColumn, String criteriaValue) {
+        String sql = "DELETE FROM public." + tableName +
+                " WHERE " + criteriaColumn + " = '" + criteriaValue + "'";
 
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

@@ -15,6 +15,8 @@ public class HelpCommand extends DefaultCommand {
                 new ClearTable(view, database),
                 new ShowTableData(view, database),
                 new InsertValues(view, database),
+                new UpdateRecords(view, database),
+                new DeleteRecords(view, database),
                 this,                       //сам HelpCommand
                 new UnknowCommand(view, database)};
     }
