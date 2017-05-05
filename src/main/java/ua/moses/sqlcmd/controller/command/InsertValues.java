@@ -44,7 +44,7 @@ public class InsertValues extends DefaultCommand {
 
     private boolean checkNotPairParameters(int count) {
         if ((count % 2) == 0) { //учитывая, что первое значение - имя таблицы, должно быть непарное общее количество параметров
-            view.writeError("Непарное значение имен колонок и записываемых значений!");
+            view.writeError("Не совпадает количество имен колонок и записываемых значений!");
             return false;
         } else {
             return true;
