@@ -6,7 +6,10 @@ import ua.moses.sqlcmd.view.View;
 public class DeleteRecords extends DefaultCommand {
 
     public DeleteRecords(View view, DataBaseManager database) {
-        super(view, database, "delete", 3, 3);
+        super(view, database, "delete", "delete|tablename|criteriacolumn|criteriavalue",
+                "удаление записей в таблице,\n" +
+                        "\tгде tablename - имя таблицы, criteriacolumn, criteriavalue - колонка и значение условия отбора",
+                3, 3);
     }
 
     public void run(String[] parameters) {
@@ -21,14 +24,8 @@ public class DeleteRecords extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
-    }
-
-    public String help() {
-        return "delete - удаление записей в таблице. Формат комманды:\n" +
-                "\tdelete|tablename|criteriacolumn|criteriavalue - где tablename - имя таблицы,\n" +
-                "\tcriteriacolumn, criteriavalue - колонка и значение условия отбора\n";
     }
 
 }

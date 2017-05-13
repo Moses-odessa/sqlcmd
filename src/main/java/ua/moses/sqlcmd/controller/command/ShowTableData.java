@@ -7,7 +7,11 @@ public class ShowTableData extends DefaultCommand {
 
 
     public ShowTableData(View view, DataBaseManager database) {
-        super(view, database, "show", 1, 2);
+        super(view, database, "show", "show|tablename или show|tablename|sortcolumn",
+                "вывод содержимого таблицы,\n" +
+                        "\tгде tablename - имя нужной таблицы, sortcolumn - имя колонки по которой будет отсортирована таблица\n" +
+                        "\t(если опущено - без сортировки)",
+                1, 2);
     }
 
     public void run(String[] parameters) {
@@ -23,14 +27,8 @@ public class ShowTableData extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 
-    public String help() {
-        return "show - вывод содержимого таблицы. Формат комманды:\n" +
-                "\tshow|tablename|sortcolumn - где tablename - имя нужной таблицы\n" +
-                "\tsortcolumn - имя колонки по которой будет отсортирована таблица\n" +
-                "\t(если опущено - без сортировки)\n";
-    }
 }

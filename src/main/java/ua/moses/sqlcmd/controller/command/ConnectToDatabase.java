@@ -6,7 +6,10 @@ import ua.moses.sqlcmd.view.View;
 public class ConnectToDatabase extends DefaultCommand {
 
     public ConnectToDatabase(View view, DataBaseManager database) {
-        super(view, database, "connect", 3, 3);
+        super(view, database, "connect", "connect|database|username|userpassword",
+                "подключение к базе данных, \n" +
+                        "\tгде database - название базы данных, username - имя пользователя, userpassword - пароль",
+                3, 3);
     }
 
     public void run(String[] parameters) {
@@ -23,9 +26,4 @@ public class ConnectToDatabase extends DefaultCommand {
         }
     }
 
-    public String help() {
-        return "connect - подключение к базе данных. Формат комманды:\n" +
-                "\tconnect|database|username|userpassword - где database - название базы данных,\n" +
-                "\tusername - имя пользователя, userpassword - пароль\n";
-    }
 }

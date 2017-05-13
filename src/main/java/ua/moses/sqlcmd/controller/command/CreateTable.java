@@ -8,7 +8,10 @@ import java.util.Arrays;
 public class CreateTable extends DefaultCommand {
 
     public CreateTable(View view, DataBaseManager database) {
-        super(view, database, "create", 1, 101);
+        super(view, database, "create", "create|tablename|column1|column2|column3|...",
+                "создание новой таблицы с заданными полями,\n" +
+                        "\tгде tablename - имя таблицы; column1, column2, column3 и т.д - названия ее полей (не больше ста)",
+                1, 101);
     }
 
     public void run(String[] parameters) {
@@ -22,13 +25,8 @@ public class CreateTable extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 
-    public String help() {
-        return "create - создание новой таблицы с заданными полями. Формат комманды:\n" +
-                "\tcreate|tablename|column1|column2|column3|... - где tablename - имя таблицы,\n" +
-                "\tcolumn1, column2, column3 и т.д - названия ее полей (не больше ста)\n";
-    }
 }

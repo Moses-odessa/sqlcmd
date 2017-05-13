@@ -7,7 +7,11 @@ public class UpdateRecords extends DefaultCommand {
 
 
     public UpdateRecords(View view, DataBaseManager database) {
-        super(view, database, "update", 5, 5);
+        super(view, database, "update", "update|tablename|criteriacolumn|criteriavalue|setcolumn|setvalue",
+                "обновление записей в таблице,\n" +
+                        "\tгде tablename - имя таблицы, criteriacolumn, criteriavalue - колонка и значение условия отбора,\n" +
+                        "\tsetcolumn, setvalue - обновляемая колонка и новое значение для нее",
+                5, 5);
     }
 
     public void run(String[] parameters) {
@@ -24,15 +28,9 @@ public class UpdateRecords extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 
-    public String help() {
-        return "update - обновление записей в таблице. Формат комманды:\n" +
-                "\tupdate|tablename|criteriacolumn|criteriavalue|setcolumn|setvalue - где tablename - имя таблицы,\n" +
-                "\tcriteriacolumn, criteriavalue - колонка и значение условия отбора\n" +
-                "\tsetcolumn, setvalue - обновляемая колонка и новое значение для нее\n";
-    }
 }
 

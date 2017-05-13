@@ -7,7 +7,10 @@ public class ClearTable extends DefaultCommand {
 
 
     public ClearTable(View view, DataBaseManager database) {
-        super(view, database, "clear", 1, 1);
+        super(view, database, "clear", "clear|tablename",
+                "очистка всех данных в таблице,\n" +
+                        "\tгде tablename - имя очищаемой таблицы",
+                1, 1);
     }
 
     public void run(String[] parameters) {
@@ -20,12 +23,8 @@ public class ClearTable extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 
-    public String help() {
-        return "clear - очистка всех данных в таблице. Формат комманды:\n" +
-                "\tclear|tablename - где tablename - имя очищаемой таблицы\n";
-    }
 }

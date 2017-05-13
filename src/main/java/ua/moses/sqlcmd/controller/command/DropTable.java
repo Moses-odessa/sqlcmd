@@ -6,7 +6,10 @@ import ua.moses.sqlcmd.view.View;
 public class DropTable extends DefaultCommand {
 
     public DropTable(View view, DataBaseManager database) {
-        super(view, database, "drop", 1, 1);
+        super(view, database, "drop", "drop|tablename",
+                "удаление таблицы из базы данных,\n" +
+                        "\tгде tablename - имя удаляемой таблицы",
+                1, 1);
     }
 
     public void run(String[] parameters) {
@@ -19,12 +22,8 @@ public class DropTable extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 
-    public String help() {
-        return "drop - удаление таблицы из базы данных. Формат комманды:\n" +
-                "\tdrop|tablename - где tablename - имя удаляемой таблицы\n";
-    }
 }

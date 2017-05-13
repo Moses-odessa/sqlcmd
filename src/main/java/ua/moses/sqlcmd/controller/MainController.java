@@ -32,7 +32,7 @@ public class MainController {
         view.write("Добро пожаловать!");
         while (true) {
             view.write("------------------------------------------------------------------\n" +
-                    "Введите нужную комманду или help для справки (или exit для выхода):");
+                    "Введите нужную комманду или printHelp для справки (или exit для выхода):");
             String[] commandString = view.read().split("\\|");
             String commandName = "";
             String[] commandParameters = new String[0];

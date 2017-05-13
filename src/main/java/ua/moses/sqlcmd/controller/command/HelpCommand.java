@@ -6,7 +6,10 @@ public class HelpCommand extends DefaultCommand {
     private final DefaultCommand[] commands;
 
     public HelpCommand(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
-        super(view, database, "help", 0, 1);
+        super(view, database, "help", "help или help|command",
+                "вызов справки,\n" +
+                        "\tпо всем коммандам (при вызове без параметров) или по комманде command",
+                0, 1);
         this.commands = new DefaultCommand[]{
                 new ConnectToDatabase(view, database),
                 new ShowAllTables(view, database),
@@ -25,13 +28,13 @@ public class HelpCommand extends DefaultCommand {
         if (checkParametersCount(parameters.length)) {
             if (parameters.length == 0) {
                 for (int i = 0; i < this.commands.length-1; i++) {//кроме последнего, который UnknownCommand
-                    view.write(this.commands[i].help());
+                    this.commands[i].printHelp();
                 }
             } else {
                 String commandForHelp = parameters[0];
                 for (DefaultCommand command : this.commands) {
                     if (command.check(commandForHelp)){
-                        view.write(command.help());
+                        command.printHelp();
                         break;
                     }
                 }
@@ -40,9 +43,4 @@ public class HelpCommand extends DefaultCommand {
         }
     }
 
-    public String help() {
-        return "help - вызов справки. Формат комманды:\n" +
-                "\thelp - вывод справки по всем коммандам\n" +
-                "\thelp|command - вывод справки по комманде command\n";
-    }
 }

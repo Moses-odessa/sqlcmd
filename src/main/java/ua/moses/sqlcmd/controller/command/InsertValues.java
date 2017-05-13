@@ -6,7 +6,12 @@ import ua.moses.sqlcmd.view.View;
 public class InsertValues extends DefaultCommand {
 
     public InsertValues(View view, DataBaseManager database) {
-        super(view, database, "insert", 3, 201);
+        super(view, database, "insert", "insert|tablename|column1|value1|column2|value2|...",
+                "добавление записи в таблицу,\n" +
+                        "\tгде tablename - имя таблицы,\n" +
+                        "\tcolumn1, column2, и т.д - названия записываемых полей (не больше ста)\n" +
+                        "\tvalue1, value2, и т.д - соответственно записываемые значения",
+                3, 201);
     }
 
     public void run(String[] parameters) {
@@ -26,15 +31,8 @@ public class InsertValues extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
-    }
-
-    public String help() {
-        return "insert - добавление записи в таблицу. Формат комманды:\n" +
-                "\tinsert|tablename|column1|value1|column2|value2|... - где tablename - имя таблицы,\n" +
-                "\tcolumn1, column2, и т.д - названия записываемых полей (не больше ста)\n" +
-                "\tvalue1, value2, и т.д - соответственно записываемые значения\n";
     }
 
     @Override

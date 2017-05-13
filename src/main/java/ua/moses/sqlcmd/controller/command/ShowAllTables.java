@@ -8,7 +8,9 @@ import java.util.Arrays;
 public class ShowAllTables extends DefaultCommand {
 
     public ShowAllTables(View view, DataBaseManager database) {
-        super(view, database, "tables", 0, 1);
+        super(view, database, "tables", "tables",
+                "вывод списка всех таблиц в подключенной базе данных.",
+                0, 1);
     }
 
     public void run(String[] parameters) {
@@ -19,12 +21,8 @@ public class ShowAllTables extends DefaultCommand {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         } else if (!database.isConnected()) {
-            view.writeError("Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!");
+            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 
-    public String help() {
-        return "tables - вывод списка таблиц. Формат комманды:\n" +
-                "\ttables - вывод списка всех таблиц в подключенной базе данных\n";
-    }
 }
