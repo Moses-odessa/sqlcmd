@@ -25,8 +25,8 @@ public class InsertValues extends DefaultCommand {
                 values[i] = parameters[i * 2 + 2];
             }
             try {
-                database.insertRecord(tabledName, columns, values);
-                view.write(String.format("Запись в таблицу %s успешно добавлена", tabledName));
+                int insertedLinesQuantity = database.insertRecord(tabledName, columns, values);
+                view.write(String.format("Запись в таблицу %s успешно добавлена. Добавлено строк: %s.", tabledName, insertedLinesQuantity));
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }

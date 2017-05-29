@@ -9,6 +9,7 @@ import static java.lang.Thread.sleep;
 
 public class MainController {
     private static final String EXIT_COMMAND = "exit";
+    private static final String HELP_COMMAND = "help";
     private ua.moses.sqlcmd.view.View view;
     private DefaultCommand[] commands;
 
@@ -31,8 +32,9 @@ public class MainController {
     public void run() {
         view.write("Добро пожаловать!");
         while (true) {
-            view.write("------------------------------------------------------------------\n" +
-                    "Введите нужную комманду или printHelp для справки (или exit для выхода):");
+
+            view.write(String.format("------------------------------------------------------------------\n" +
+                    "Введите нужную комманду или %s для справки (или %s для выхода):", HELP_COMMAND, EXIT_COMMAND));
             String[] commandString = view.read().split("\\|");
             String commandName = "";
             String[] commandParameters = new String[0];

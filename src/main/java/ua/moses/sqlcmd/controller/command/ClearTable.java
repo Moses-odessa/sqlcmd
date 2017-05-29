@@ -17,8 +17,8 @@ public class ClearTable extends DefaultCommand {
         if (checkParametersCount(parameters.length) && database.isConnected()) {
             String tabledName = parameters[0];
             try {
-                database.clearTable(tabledName);
-                view.write(String.format("Таблица %s успешно очищена", tabledName));
+                int deletedLinesQuantity = database.clearTable(tabledName);
+                view.write(String.format("Таблица %s успешно очищена. Удалено строк: %s.", tabledName, deletedLinesQuantity));
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }

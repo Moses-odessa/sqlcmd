@@ -61,7 +61,7 @@ public class PostgresManager implements DataBaseManager {
 
     }
 
-    public void createTable(String tableName, String[] columnsName) throws RuntimeException {
+    public boolean createTable(String tableName, String[] columnsName) throws RuntimeException {
         String columnsQuerry = "";
         for (int i = 0; i < columnsName.length; i++) {
             columnsQuerry += columnsName[i] + " text";
@@ -79,22 +79,24 @@ public class PostgresManager implements DataBaseManager {
             throw new RuntimeException(e.getMessage());
         }
 
+        return true;
     }
 
-    public void dropTable(String tableName) throws RuntimeException {
+
+    public boolean dropTable(String tableName) throws RuntimeException {
         String sql = "DROP TABLE public." + tableName;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
-
+        return true;
     }
 
-    public void clearTable(String tableName) throws RuntimeException {
+    public int clearTable(String tableName) throws RuntimeException {
         String sql = "DELETE FROM public." + tableName;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.executeUpdate();
+            return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -137,7 +139,7 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public void insertRecord(String tableName, String[] columns, String[] values) throws RuntimeException {
+    public int insertRecord(String tableName, String[] columns, String[] values) throws RuntimeException {
         String columnsQuerry = "";
         String valuesQuerry = "";
         for (int i = 0; i < columns.length; i++) {
@@ -157,7 +159,7 @@ public class PostgresManager implements DataBaseManager {
                 "VALUES (" + valuesQuerry + ")\n";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.executeUpdate();
+            return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
