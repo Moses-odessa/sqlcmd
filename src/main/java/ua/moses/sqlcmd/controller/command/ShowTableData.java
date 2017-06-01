@@ -15,7 +15,7 @@ public class ShowTableData extends DefaultCommand {
     }
 
     public void run(String[] parameters) {
-        if (checkParametersCount(parameters.length) && database.isConnected()) {
+        if (checkParametersCount(parameters.length) && checkConnection()) {
             String tabledName = parameters[0];
             String sortColumn = "";
             if (parameters.length > 1){
@@ -26,8 +26,6 @@ public class ShowTableData extends DefaultCommand {
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
-        } else if (!database.isConnected()) {
-            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 

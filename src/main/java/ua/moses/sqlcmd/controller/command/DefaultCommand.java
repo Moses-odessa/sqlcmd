@@ -30,7 +30,7 @@ public abstract class DefaultCommand {
 
     public abstract void run(String[] parameters);
 
-    public void printHelp(){
+    void printHelp(){
         view.write(commandFormat + " - " + commandDescription + "\n");
     }
 
@@ -48,6 +48,14 @@ public abstract class DefaultCommand {
         } else {
             return true;
         }
+    }
+
+    boolean checkConnection(){
+        if (database.isConnected()) {
+            return true;
+        }
+        view.writeError(NOT_CONNECT_ERROR_MESSAGE);
+        return false;
     }
 
 

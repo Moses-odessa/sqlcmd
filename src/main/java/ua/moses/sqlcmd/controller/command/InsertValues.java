@@ -15,7 +15,7 @@ public class InsertValues extends DefaultCommand {
     }
 
     public void run(String[] parameters) {
-        if (checkParametersCount(parameters.length) && database.isConnected()) {
+        if (checkParametersCount(parameters.length) && checkConnection()) {
             String tabledName = parameters[0];
             int valuesCount = (parameters.length - 1) / 2;
             String[] columns = new String[valuesCount];
@@ -30,8 +30,6 @@ public class InsertValues extends DefaultCommand {
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
-        } else if (!database.isConnected()) {
-            view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         }
     }
 
