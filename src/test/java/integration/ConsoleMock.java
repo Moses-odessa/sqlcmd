@@ -56,7 +56,7 @@ class ConsoleMock {
             return (int) ch;
         }
 
-        void add(String line) {
+        public void add(String line) {
             if (this.line == null) {
                 this.line = line;
             } else {

@@ -12,7 +12,7 @@ public abstract class DefaultCommand {
     private final int minParametersCount;
     private final int maxParametersCount;
     protected final String DEFAULT_ERROR_MESSAGE = "Ошибка выполнения комманды: ";
-    protected final String NOT_CONNECT_ERROR_MESSAGE = "Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!";
+    private final String NOT_CONNECT_ERROR_MESSAGE = "Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!";
 
     DefaultCommand(View view, DataBaseManager database, String commandName, String commandFormat, String commandDescription, int minParametersCount, int maxParametersCount) {
         this.view = view;
@@ -30,7 +30,7 @@ public abstract class DefaultCommand {
 
     public abstract void run(String[] parameters);
 
-    void printHelp(){
+    public void printHelp(){
         view.write(commandFormat + " - " + commandDescription + "\n");
     }
 
