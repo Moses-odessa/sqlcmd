@@ -1,5 +1,8 @@
 package ua.moses.sqlcmd.view;
 
+import ua.moses.sqlcmd.model.Record;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Console implements View {
@@ -17,39 +20,39 @@ public class Console implements View {
         System.err.println(s);
     }
 
-    public void writeTable(String[][] tableData) {
-        int[] maxColumnsSize = getMaxColumsSize(tableData);
-        if (tableData[0].length == 0) {
+    public void writeTable(List<Record> tableData) {
+        if (tableData.get(0).length() == 0) {
             System.err.println("Таблица не имеет колонок!");
         } else {
+            int[] maxColumnsSize = getMaxColumnsSize(tableData);
             printHorisontalLine(maxColumnsSize, "┌", "─", "┐", "┬");
-            printRow(tableData[0], maxColumnsSize);
+            printRow(tableData.get(0), maxColumnsSize);
             printHorisontalLine(maxColumnsSize, "├", "─", "┤", "┼");
-            for (int i = 1; i < tableData.length; i++) {
-                printRow(tableData[i], maxColumnsSize);
+            for (int i = 1; i < tableData.size(); i++) {
+                printRow(tableData.get(i), maxColumnsSize);
             }
             printHorisontalLine(maxColumnsSize, "└", "─", "┘", "┴");
         }
     }
 
-    private int[] getMaxColumsSize(String[][] tableData) {
-        int[] maxColumnsSize = new int[tableData[0].length];
-        for (String[] tableRow : tableData) {
-            for (int columnIndex = 0; columnIndex < tableRow.length; columnIndex++) {
-                if (tableRow[columnIndex].length() > maxColumnsSize[columnIndex]) {
-                    maxColumnsSize[columnIndex] = tableRow[columnIndex].length();
+    private int[] getMaxColumnsSize(List<Record> tableData) {
+        int[] maxColumnsSize = new int[tableData.get(0).length()];
+        for (Record tableRow : tableData) {
+            for (int columnIndex = 0; columnIndex < tableRow.length(); columnIndex++) {
+                if (tableRow.get(columnIndex).toString().length() > maxColumnsSize[columnIndex]) {
+                    maxColumnsSize[columnIndex] = tableRow.get(columnIndex).toString().length();
                 }
             }
         }
         return maxColumnsSize;
     }
 
-    private void printRow(String[] tableRow, int[] maxColumnsSize) {
+    private void printRow(Record tableRow, int[] maxColumnsSize) {
         System.out.print("│ ");
-        for (int i = 0; i < tableRow.length; i++) {
-            System.out.print(tableRow[i]);
-            printMultiSymbol(" ", maxColumnsSize[i] - tableRow[i].length());
-            if (i != tableRow.length - 1) {
+        for (int i = 0; i < tableRow.length(); i++) {
+            System.out.print(tableRow.get(i));
+            printMultiSymbol(" ", maxColumnsSize[i] - tableRow.get(i).toString().length());
+            if (i != tableRow.length() - 1) {
                 System.out.print(" │ ");
             }
         }

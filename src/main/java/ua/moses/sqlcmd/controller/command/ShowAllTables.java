@@ -16,7 +16,7 @@ public class ShowAllTables extends DefaultCommand {
     public void run(String[] parameters) {
         if (checkParametersCount(parameters.length) && checkConnection()) {
             try {
-                view.write(Arrays.toString(database.getTables()));
+                view.write(database.getTables().toString());
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }

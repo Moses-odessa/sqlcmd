@@ -46,7 +46,7 @@ public abstract class DataBaseManagerTest {
         //given
         //when
         //then
-        assertThat(Arrays.toString(database.getTables()),
+        assertThat(database.getTables().toString(),
                 containsString(TEST_TABLE_NAME));
     }
 
@@ -58,7 +58,7 @@ public abstract class DataBaseManagerTest {
         database.insertRecord(TEST_TABLE_NAME, TEST_TABLE_COLUMNS, TEST_TABLE_VALUES);
         //then
         assertEquals(Arrays.toString(TEST_TABLE_VALUES),
-                Arrays.toString(database.getTableData(TEST_TABLE_NAME, TEST_TABLE_COLUMNS[0])[1]));
+                Arrays.toString(database.getTableData(TEST_TABLE_NAME, TEST_TABLE_COLUMNS[0]).get(1).toArray()));
     }
 
     @Test
@@ -115,7 +115,7 @@ public abstract class DataBaseManagerTest {
         database.clearTable(TEST_TABLE_NAME);
         //then
         assertEquals(1,
-                database.getTableData(TEST_TABLE_NAME, TEST_TABLE_COLUMNS[0]).length);
+                database.getTableData(TEST_TABLE_NAME, TEST_TABLE_COLUMNS[0]).size());
     }
 
 

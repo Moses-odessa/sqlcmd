@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.Properties;
+import java.util.*;
 
 public class PostgresManager implements DataBaseManager {
     private Connection connection;
@@ -42,35 +41,31 @@ public class PostgresManager implements DataBaseManager {
         return this.connection != null;
     }
 
-    public String[] getTables() throws RuntimeException {
+    public Set<String> getTables() throws RuntimeException {
         String sql = "SELECT tablename FROM pg_catalog.pg_tables where schemaname = 'public'";
-        String[] result = new String[1000];
+        Set<String> result = new LinkedHashSet<>();
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
-            int index = 0;
             while (resultSet.next()) {
-                result[index] = resultSet.getString(1);
-                index++;
+                result.add(resultSet.getString(1));
             }
-            return Arrays.copyOf(result, index);
-
+            return result;
         } catch (SQLException e) {
-
             throw new RuntimeException(e.getMessage());
         }
 
     }
 
     public boolean createTable(String tableName, String[] columnsName) throws RuntimeException {
-        String columnsQuerry = "";
+        String columnsQuery = "";
         for (int i = 0; i < columnsName.length; i++) {
-            columnsQuerry += columnsName[i] + " text";
+            columnsQuery += columnsName[i] + " text";
             if (i < columnsName.length - 1) {
-                columnsQuerry += ",\n";
+                columnsQuery += ",\n";
             }
         }
         String sql = "CREATE TABLE public." + tableName + "\n" +
-                "(" + columnsQuerry + ")\n" +
+                "(" + columnsQuery + ")\n" +
                 "TABLESPACE pg_default";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -102,7 +97,7 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public String[][] getTableData(String tableName, String sortColumn) throws RuntimeException {
+    public List<Record> getTableData(String tableName, String sortColumn) throws RuntimeException {
         String sql = "SELECT * FROM public." + tableName;
         if (sortColumn.length() > 0){
             sql+= " ORDER BY " + sortColumn;
@@ -113,25 +108,22 @@ public class PostgresManager implements DataBaseManager {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnsCount = metaData.getColumnCount();
 
-            String[][] result = new String[1000][columnsCount];
+            List<Record> result = new LinkedList<>();
 
-            String[] columns = new String[columnsCount];
+            Record columns = new MyRecord(columnsCount);
             for (int i = 0; i < columnsCount; i++) {
-                columns[i] = metaData.getColumnName(i + 1);
+                columns.set(i, metaData.getColumnName(i + 1));
             }
 
-            result[0] = columns;
-
-            int index = 1;
+            result.add(columns);
             while (resultSet.next()) {
-                String[] currentRow = new String[columnsCount];
+                Record currentRow = new MyRecord(columnsCount);
                 for (int i = 0; i < columnsCount; i++) {
-                    currentRow[i] = resultSet.getString(i + 1);
+                    currentRow.set(i, resultSet.getString(i + 1));
                 }
-                result[index] = currentRow;
-                index++;
+                result.add(currentRow);
             }
-            return Arrays.copyOf(result, index);
+            return result;
 
         } catch (SQLException e) {
 
@@ -140,12 +132,12 @@ public class PostgresManager implements DataBaseManager {
     }
 
     public int insertRecord(String tableName, String[] columns, String[] values) throws RuntimeException {
-        String columnsQuerry = "";
+        String columnsQuery = "";
         String valuesQuerry = "";
         for (int i = 0; i < columns.length; i++) {
-            columnsQuerry += columns[i];
+            columnsQuery += columns[i];
             if (i < columns.length - 1) {
-                columnsQuerry += ", ";
+                columnsQuery += ", ";
             }
         }
         for (int i = 0; i < values.length; i++) {
@@ -155,7 +147,7 @@ public class PostgresManager implements DataBaseManager {
             }
         }
         String sql = "INSERT INTO public." + tableName + "\n" +
-                "(" + columnsQuerry + ")\n" +
+                "(" + columnsQuery + ")\n" +
                 "VALUES (" + valuesQuerry + ")\n";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
