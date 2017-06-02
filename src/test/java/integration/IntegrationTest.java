@@ -56,7 +56,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testHelpAndExit() {
+    public void testHelp() {
         // given
         console.addIn("help");
         console.addIn("exit");
@@ -102,7 +102,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testHelpForConnectExit() {
+    public void testHelpForConnect() {
         // given
         console.addIn("help|connect");
         console.addIn("exit");
@@ -118,7 +118,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testHelpForUnknowCommandExit() {
+    public void testHelpForUnknowCommand() {
         // given
         console.addIn("help|abracadabra");
         console.addIn("exit");
@@ -133,7 +133,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectAndExit() {
+    public void testConnect() {
         // given
         console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
         console.addIn("exit");
@@ -147,7 +147,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectBadPasswordAndExit() {
+    public void testErrorConnectBadPassword() {
         // given
         console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + "lkdfgjlfjgldsfgldsfjg;ljsdfl;kg");
         console.addIn("exit");
@@ -161,7 +161,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectBadDatabaseAndExit() {
+    public void testErrorConnectBadDatabase() {
         // given
         console.addIn("connect|" + "lkdfgjlfjgldsfgldsfjg;ljsdfl;kg" + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
         console.addIn("exit");
@@ -175,7 +175,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectBadCountParametersAndExit() {
+    public void testErrorConnectBadCountParameters() {
         // given
         console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER);
         console.addIn("exit");
@@ -190,7 +190,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectShowTablesAndExit() {
+    public void testShowTables() {
         // given
         console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
         console.addIn("tables");
@@ -203,7 +203,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testShowTablesWithoutConnectAndExit() {
+    public void testErrorShowTablesWithoutConnect() {
         // given
         console.addIn("tables");
         console.addIn("exit");
@@ -217,7 +217,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testUnknowCommandAndExit() {
+    public void testUnknowCommand() {
         // given
         console.addIn("abracadabra|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
         console.addIn("exit");
@@ -231,7 +231,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectInsertWithNotPairParametersAndExit() {
+    public void testErrorInsertWithNotPairParameters() {
         // given
         console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
         console.addIn("insert|" + TABLE_FOR_MANIPULATION + "|column1|value1|column2");
@@ -249,7 +249,26 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectCreateTableShowTableDataDeleteTableAndExit() {
+    public void testErrorInsertWithLessParameters() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("insert|" + TABLE_FOR_MANIPULATION + "|column1");
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Неверное количество параметров. Ожидается от 3 до 201, а получено 2.\n" +
+                "Ожидаемый формат комманды: insert|tablename|column1|value1|column2|value2|....\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testCreateTableShowTableDataDeleteTable() {
         // given
         console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
         console.addIn("create|" + TEST_TABLE_NAME + "|column1|column2");
@@ -278,7 +297,146 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testConnectInsertUpdateDeleteValuesClearAndExit() {
+    public void testErrorCreateExistingTable() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("create|" + TEST_TABLE_NAME + "|column1|column2");
+        console.addIn("create|" + TEST_TABLE_NAME + "|column1|column2");
+        console.addIn("drop|" + TEST_TABLE_NAME);
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Таблица " + TEST_TABLE_NAME + " успешно создана\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Ошибка выполнения комманды: ОШИБКА: отношение \"" + TEST_TABLE_NAME + "\" уже существует\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Таблица " + TEST_TABLE_NAME + " успешно удалена\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testErrorDeleteNotExistingTable() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("drop|" + TEST_TABLE_NAME);
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Ошибка выполнения комманды: ОШИБКА: таблица \"" + TEST_TABLE_NAME + "\" не существует\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testErrorClearNotExistingTable() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("clear|" + TEST_TABLE_NAME);
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Ошибка выполнения комманды: ОШИБКА: отношение \"public." + TEST_TABLE_NAME + "\" не существует\n" +
+                "  Позиция: 13\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testErrorShowTableDataNotExistingTable() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("show|" + TEST_TABLE_NAME);
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Ошибка выполнения комманды: ОШИБКА: отношение \"public." + TEST_TABLE_NAME + "\" не существует\n" +
+                "  Позиция: 15\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testErrorDeleteRecordsFromNotExistingTable() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("delete|" + TEST_TABLE_NAME + "|column1|value1");
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Ошибка выполнения комманды: ОШИБКА: отношение \"public." + TEST_TABLE_NAME + "\" не существует\n" +
+                "  Позиция: 13\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testErrorInsertValuesToNotExistingTable() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("insert|" + TEST_TABLE_NAME + "|column1|value1");
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Ошибка выполнения комманды: ОШИБКА: отношение \"public." + TEST_TABLE_NAME + "\" не существует\n" +
+                "  Позиция: 13\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testErrorUpdateRecordsInNotExistingTable() {
+        // given
+        console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
+        console.addIn("update|" + TEST_TABLE_NAME + "|column1|value1|column2|changedvalue");
+        console.addIn("exit");
+        // when
+        Main.main(new String[0]);
+
+        // then
+        assertEqualsWithConsoleOut("Подключение к базе данных " + DATABASE_NAME + " с пользователем " + DATABASE_USER + " прошло успешно\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n" +
+                "Ошибка выполнения комманды: ОШИБКА: отношение \"public." + TEST_TABLE_NAME + "\" не существует\n" +
+                "  Позиция: 8\n" +
+                "------------------------------------------------------------------\n" +
+                "Введите нужную комманду или help для справки (или exit для выхода):\n");
+    }
+
+    @Test
+    public void testInsertUpdateDeleteValuesClear() {
         // given
         console.addIn("connect|" + DATABASE_NAME + "|" + DATABASE_USER + "|" + DATABASE_PASSWORD);
         console.addIn("insert|" + TABLE_FOR_MANIPULATION + "|column1|value1|column2|value2");
