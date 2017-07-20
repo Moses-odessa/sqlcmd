@@ -133,7 +133,7 @@ public class PostgresManager implements DataBaseManager {
 
     public int insertRecord(String tableName, String[] columns, String[] values) throws RuntimeException {
         String columnsQuery = "";
-        String valuesQuerry = "";
+        String valuesQuery = "";
         for (int i = 0; i < columns.length; i++) {
             columnsQuery += columns[i];
             if (i < columns.length - 1) {
@@ -141,14 +141,14 @@ public class PostgresManager implements DataBaseManager {
             }
         }
         for (int i = 0; i < values.length; i++) {
-            valuesQuerry += "'" + values[i] + "'";
+            valuesQuery += "'" + values[i] + "'";
             if (i < values.length - 1) {
-                valuesQuerry += ", ";
+                valuesQuery += ", ";
             }
         }
         String sql = "INSERT INTO public." + tableName + "\n" +
                 "(" + columnsQuery + ")\n" +
-                "VALUES (" + valuesQuerry + ")\n";
+                "VALUES (" + valuesQuery + ")\n";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             return statement.executeUpdate();

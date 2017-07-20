@@ -12,17 +12,17 @@ public class Console implements View {
         return scanner.nextLine();
     }
 
-    public void write(String s) {
+    synchronized public void write(String s) {
         System.out.println(s);
     }
 
-    public void writeError(String s) {
+    synchronized public void writeError(String s) {
         System.err.println(s);
     }
 
-    public void writeTable(List<Record> tableData) {
+    synchronized public void writeTable(List<Record> tableData) {
         if (tableData.get(0).length() == 0) {
-            System.err.println("Таблица не имеет колонок!");
+            writeError("Таблица не имеет колонок!");
         } else {
             int[] maxColumnsSize = getMaxColumnsSize(tableData);
             printHorisontalLine(maxColumnsSize, "┌", "─", "┐", "┬");
