@@ -2,9 +2,9 @@ package ua.moses.sqlcmd.controller;
 
 import ua.moses.sqlcmd.controller.command.*;
 import ua.moses.sqlcmd.model.DataBaseManager;
+import ua.moses.sqlcmd.view.View;
 
 import java.util.Arrays;
-
 import static java.lang.Thread.sleep;
 
 public class MainController {
@@ -12,13 +12,14 @@ public class MainController {
     public static final String HELP_COMMAND = "help";
     public static final String GREETING = "Добро пожаловать!";
     public static final String PARTING = "До скорой встречи!";
-    public static final String COMMAND_PROMPT = String.format("------------------------------------------------------------------\n" +
+    public static final String COMMAND_PROMPT =
+            String.format("------------------------------------------------------------------\n" +
             "Введите нужную комманду или %s для справки (или %s для выхода):", HELP_COMMAND, EXIT_COMMAND);
 
-    private ua.moses.sqlcmd.view.View view;
-    private DefaultCommand[] commands;
+    private final View view;
+    private final DefaultCommand[] commands;
 
-    MainController(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
+    public MainController(ua.moses.sqlcmd.view.View view, DataBaseManager database) {
         this.view = view;
         this.commands = new DefaultCommand[]{
                 new ConnectToDatabase(view, database),
@@ -37,14 +38,11 @@ public class MainController {
     public void run() {
         view.write(GREETING);
         while (true) {
-
             view.write(COMMAND_PROMPT);
             String[] commandString = view.read().split("\\|");
-            String commandName = "";
+            String commandName;
             String[] commandParameters = new String[0];
-            if (commandString.length > 0) {
-                commandName = commandString[0];
-            }
+            commandName = commandString[0];
             if (commandString.length > 1) {
                 commandParameters = Arrays.copyOfRange(commandString, 1, commandString.length);
             }
@@ -65,6 +63,5 @@ public class MainController {
                 // ничего не делаем
             }
         }
-
     }
 }

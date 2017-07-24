@@ -4,17 +4,17 @@ import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
 public abstract class DefaultCommand {
-    protected View view;
-    protected DataBaseManager database;
+    final View view;
+    final DataBaseManager database;
     private final String commandName;
     private final String commandFormat;
     private final String commandDescription;
     private final int minParametersCount;
     private final int maxParametersCount;
-    protected final String DEFAULT_ERROR_MESSAGE = "Ошибка выполнения комманды: ";
-    private final String NOT_CONNECT_ERROR_MESSAGE = "Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!";
+    final String DEFAULT_ERROR_MESSAGE = "Ошибка выполнения комманды: ";
 
-    DefaultCommand(View view, DataBaseManager database, String commandName, String commandFormat, String commandDescription, int minParametersCount, int maxParametersCount) {
+    DefaultCommand(View view, DataBaseManager database, String commandName, String commandFormat,
+                   String commandDescription, int minParametersCount, int maxParametersCount) {
         this.view = view;
         this.database = database;
         this.commandName = commandName;
@@ -30,7 +30,7 @@ public abstract class DefaultCommand {
 
     public abstract void run(String[] parameters);
 
-    public void printHelp(){
+    void printHelp(){
         view.write(commandFormat + " - " + commandDescription + "\n");
     }
 
@@ -54,9 +54,9 @@ public abstract class DefaultCommand {
         if (database.isConnected()) {
             return true;
         }
+        String NOT_CONNECT_ERROR_MESSAGE =
+                "Для выполнения этой комманды нужно подключиться к базе данных используя комманду connect!";
         view.writeError(NOT_CONNECT_ERROR_MESSAGE);
         return false;
     }
-
-
 }

@@ -15,10 +15,8 @@ public class UnknownCommand extends DefaultCommand {
         view.writeError("Данной команды не существует!");
     }
 
-
     @Override
     public boolean check(String commandName) {
         return true;
     }
-
 }

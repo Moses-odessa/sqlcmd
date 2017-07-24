@@ -19,11 +19,11 @@ public class ConnectToDatabase extends DefaultCommand {
             String userPassword = parameters[2];
             try {
                 database.connect(databaseName, userName, userPassword);
-                view.write(String.format("Подключение к базе данных %s с пользователем %s прошло успешно", databaseName, userName));
+                view.write(String.format("Подключение к базе данных %s с пользователем %s прошло успешно",
+                        databaseName, userName));
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         }
     }
-
 }

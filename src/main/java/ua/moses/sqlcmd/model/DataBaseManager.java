@@ -14,5 +14,4 @@ public interface DataBaseManager {
     int insertRecord (String tableName, String[] columns, String[] values) throws RuntimeException;
     int updateRecord (String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue);
     int deleteRecord (String tableName, String criteriaColumn, String criteriaValue);
-
 }

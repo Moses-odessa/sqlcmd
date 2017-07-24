@@ -5,7 +5,6 @@ import ua.moses.sqlcmd.view.View;
 
 public class ShowTableData extends DefaultCommand {
 
-
     public ShowTableData(View view, DataBaseManager database) {
         super(view, database, "show", "show|tablename или show|tablename|sortcolumn",
                 "вывод содержимого таблицы,\n" +
@@ -28,5 +27,4 @@ public class ShowTableData extends DefaultCommand {
             }
         }
     }
-
 }

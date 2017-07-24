@@ -1,5 +1,6 @@
-package ua.moses.sqlcmd.controller;
+package ua.moses.sqlcmd;
 
+import ua.moses.sqlcmd.controller.MainController;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.model.PostgresManager;
 import ua.moses.sqlcmd.view.Console;

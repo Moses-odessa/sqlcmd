@@ -3,9 +3,9 @@ package ua.moses.sqlcmd.model;
 import java.util.Arrays;
 
 public class MyRecord implements Record {
-    private Object[] values;
+    private final Object[] values;
 
-    public MyRecord(int size) {
+    MyRecord(int size) {
         this.values = new Object[size];
     }
 

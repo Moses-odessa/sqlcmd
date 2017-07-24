@@ -23,5 +23,4 @@ public class DropTable extends DefaultCommand {
             }
         }
     }
-
 }

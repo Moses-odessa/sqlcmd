@@ -25,5 +25,4 @@ public class DeleteRecords extends DefaultCommand {
             }
         }
     }
-
 }

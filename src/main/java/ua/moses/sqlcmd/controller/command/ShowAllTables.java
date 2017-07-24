@@ -3,8 +3,6 @@ package ua.moses.sqlcmd.controller.command;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.view.View;
 
-import java.util.Arrays;
-
 public class ShowAllTables extends DefaultCommand {
 
     public ShowAllTables(View view, DataBaseManager database) {
@@ -22,5 +20,4 @@ public class ShowAllTables extends DefaultCommand {
             }
         }
     }
-
 }

@@ -26,5 +26,4 @@ public class CreateTable extends DefaultCommand {
             }
         }
     }
-
 }

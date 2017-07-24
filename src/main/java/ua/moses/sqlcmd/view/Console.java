@@ -63,18 +63,16 @@ public class Console implements View {
         for (int i = 0; i < spaceCount; i++) {
             System.out.print(symbol);
         }
-
     }
 
-    private void printHorisontalLine(int[] maxColumnsSize, String startSymbol, String middleSymbol, String endSymbol, String crossSymbol) {
+    private void printHorisontalLine(int[] maxColumnsSize, String startSymbol, String middleSymbol,
+                                     String endSymbol, String crossSymbol) {
         System.out.print(startSymbol);
         for (int i = 0; i < maxColumnsSize.length; i++) {
             if (i != 0) {
                 System.out.print(crossSymbol);
             }
             printMultiSymbol(middleSymbol, maxColumnsSize[i]+2);
-
-
         }
         System.out.println(endSymbol);
     }

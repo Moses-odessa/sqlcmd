@@ -4,8 +4,8 @@ import java.io.*;
 
 class ConsoleMock {
 
-    private ConfigurableInputStream in;
-    private ByteArrayOutputStream out;
+    private final ConfigurableInputStream in;
+    private final ByteArrayOutputStream out;
 
     ConsoleMock() {
         out = new ByteArrayOutputStream();

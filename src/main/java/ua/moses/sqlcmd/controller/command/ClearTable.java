@@ -5,7 +5,6 @@ import ua.moses.sqlcmd.view.View;
 
 public class ClearTable extends DefaultCommand {
 
-
     public ClearTable(View view, DataBaseManager database) {
         super(view, database, "clear", "clear|tablename",
                 "очистка всех данных в таблице,\n" +
@@ -18,11 +17,11 @@ public class ClearTable extends DefaultCommand {
             String tabledName = parameters[0];
             try {
                 int deletedLinesQuantity = database.clearTable(tabledName);
-                view.write(String.format("Таблица %s успешно очищена. Удалено строк: %s.", tabledName, deletedLinesQuantity));
+                view.write(String.format("Таблица %s успешно очищена. Удалено строк: %s.",
+                        tabledName, deletedLinesQuantity));
             } catch (RuntimeException e) {
                 view.writeError(DEFAULT_ERROR_MESSAGE + e.getMessage());
             }
         }
     }
-
 }

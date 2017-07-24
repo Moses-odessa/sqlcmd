@@ -3,7 +3,7 @@ package integration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ua.moses.sqlcmd.controller.Main;
+import ua.moses.sqlcmd.Main;
 import ua.moses.sqlcmd.controller.MainController;
 import ua.moses.sqlcmd.model.DataBaseManager;
 import ua.moses.sqlcmd.model.PostgresManager;
@@ -17,7 +17,7 @@ public class IntegrationTest {
     private final String DATABASE_NAME = "postgres";
     private final String DATABASE_USER = "postgres";
     private final String DATABASE_PASSWORD = "tend";
-    private ConsoleMock console = new ConsoleMock();
+    private final ConsoleMock console = new ConsoleMock();
     private final String TEST_TABLE_NAME = "dkmbcsryfdkmnbvytkk";
     private final String TABLE_FOR_MANIPULATION = "qikmdbrtbloparwecq";
 

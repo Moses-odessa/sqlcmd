@@ -8,18 +8,19 @@ import java.util.*;
 
 public class PostgresManager implements DataBaseManager {
     private Connection connection;
-    private String SERVER_NAME = "localhost";
-    private String SERVER_PORT = "5432";
+    private String SERVER_NAME;
+    private String SERVER_PORT;
 
     public PostgresManager() {
         this.connection = null;
         Properties properties = new Properties();
-        try (FileInputStream propertiesFile = new FileInputStream(new File("src/main/resources/postgres.properties"))) {
+        try (FileInputStream propertiesFile =
+                     new FileInputStream(new File("src/main/resources/postgres.properties"))) {
             properties.load(propertiesFile);
             this.SERVER_NAME = properties.getProperty("SERVER_NAME");
             this.SERVER_PORT = properties.getProperty("SERVER_PORT");
         } catch (IOException e) {
-            //если нет файла конфигурации, то остаются значения по умолчанию
+            throw new RuntimeException("Невозможно прочитать файл настроек для подключенияк БД. " + e.getMessage());
         }
     }
 
@@ -57,23 +58,19 @@ public class PostgresManager implements DataBaseManager {
     }
 
     public boolean createTable(String tableName, String[] columnsName) throws RuntimeException {
-        String columnsQuery = "";
+        StringBuilder columnsQuery = new StringBuilder();
         for (int i = 0; i < columnsName.length; i++) {
-            columnsQuery += columnsName[i] + " text";
+            columnsQuery.append(columnsName[i]).append(" text");
             if (i < columnsName.length - 1) {
-                columnsQuery += ",\n";
+                columnsQuery.append(",\n");
             }
         }
-        String sql = "CREATE TABLE public." + tableName + "\n" +
-                "(" + columnsQuery + ")\n" +
-                "TABLESPACE pg_default";
-
+        String sql = String.format("CREATE TABLE public.%s (%s) TABLESPACE pg_default", tableName, columnsQuery);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
-
         return true;
     }
 
@@ -107,14 +104,11 @@ public class PostgresManager implements DataBaseManager {
 
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnsCount = metaData.getColumnCount();
-
-            List<Record> result = new LinkedList<>();
-
             Record columns = new MyRecord(columnsCount);
             for (int i = 0; i < columnsCount; i++) {
                 columns.set(i, metaData.getColumnName(i + 1));
             }
-
+            List<Record> result = new LinkedList<>();
             result.add(columns);
             while (resultSet.next()) {
                 Record currentRow = new MyRecord(columnsCount);
@@ -132,18 +126,18 @@ public class PostgresManager implements DataBaseManager {
     }
 
     public int insertRecord(String tableName, String[] columns, String[] values) throws RuntimeException {
-        String columnsQuery = "";
-        String valuesQuery = "";
+        StringBuilder columnsQuery = new StringBuilder();
+        StringBuilder valuesQuery = new StringBuilder();
         for (int i = 0; i < columns.length; i++) {
-            columnsQuery += columns[i];
+            columnsQuery.append(columns[i]);
             if (i < columns.length - 1) {
-                columnsQuery += ", ";
+                columnsQuery.append(", ");
             }
         }
         for (int i = 0; i < values.length; i++) {
-            valuesQuery += "'" + values[i] + "'";
+            valuesQuery.append("'").append(values[i]).append("'");
             if (i < values.length - 1) {
-                valuesQuery += ", ";
+                valuesQuery.append(", ");
             }
         }
         String sql = "INSERT INTO public." + tableName + "\n" +
@@ -157,11 +151,10 @@ public class PostgresManager implements DataBaseManager {
         }
     }
 
-    public int updateRecord(String tableName, String criteriaColumn, String criteriaValue, String setColumn, String setValue) {
-        String sql = "UPDATE public." + tableName + " SET " +
-                setColumn + " = '" + setValue + "'  " +
-                "WHERE " + criteriaColumn + " = '" + criteriaValue + "'";
-
+    public int updateRecord(String tableName, String criteriaColumn, String criteriaValue,
+                            String setColumn, String setValue) {
+        String sql = String.format("UPDATE public.%s SET %s = '%s' WHERE %s = '%s'",
+                tableName, setColumn, setValue, criteriaColumn, criteriaValue);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             return statement.executeUpdate();
         } catch (SQLException e) {
@@ -170,9 +163,7 @@ public class PostgresManager implements DataBaseManager {
     }
 
     public int deleteRecord(String tableName, String criteriaColumn, String criteriaValue) {
-        String sql = "DELETE FROM public." + tableName +
-                " WHERE " + criteriaColumn + " = '" + criteriaValue + "'";
-
+        String sql = String.format("DELETE FROM public.%s WHERE %s = '%s'", tableName, criteriaColumn, criteriaValue);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             return statement.executeUpdate();
         } catch (SQLException e) {

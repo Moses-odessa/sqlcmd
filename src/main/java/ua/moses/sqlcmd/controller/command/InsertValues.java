@@ -45,7 +45,6 @@ public class InsertValues extends DefaultCommand {
         } else {
             return true;
         }
-
     }
 }
 

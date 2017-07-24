@@ -20,14 +20,14 @@ public class HelpCommand extends DefaultCommand {
                 new InsertValues(view, database),
                 new UpdateRecords(view, database),
                 new DeleteRecords(view, database),
-                this,                       //сам HelpCommand
+                this,
                 new UnknownCommand(view, database)};
     }
 
     public void run(String[] parameters) {
         if (checkParametersCount(parameters.length)) {
             if (parameters.length == 0) {
-                for (int i = 0; i < this.commands.length-1; i++) {//кроме последнего, который UnknownCommand
+                for (int i = 0; i < this.commands.length-1; i++) {
                     this.commands[i].printHelp();
                 }
             } else {
@@ -39,8 +39,6 @@ public class HelpCommand extends DefaultCommand {
                     }
                 }
             }
-
         }
     }
-
 }

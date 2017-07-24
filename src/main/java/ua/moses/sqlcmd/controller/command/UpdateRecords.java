@@ -5,7 +5,6 @@ import ua.moses.sqlcmd.view.View;
 
 public class UpdateRecords extends DefaultCommand {
 
-
     public UpdateRecords(View view, DataBaseManager database) {
         super(view, database, "update", "update|tablename|criteriacolumn|criteriavalue|setcolumn|setvalue",
                 "обновление записей в таблице,\n" +
@@ -29,6 +28,5 @@ public class UpdateRecords extends DefaultCommand {
             }
         }
     }
-
 }
 
